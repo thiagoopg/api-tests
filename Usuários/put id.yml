@@ -1,0 +1,24 @@
+info:
+  name: put id
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: "{{url}}/usuarios/{{id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Fulano da Silva",
+        "email": "beltrano@qa.com.br",
+        "password": "teste",
+        "administrador": "true"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

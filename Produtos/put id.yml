@@ -1,0 +1,24 @@
+info:
+  name: put id
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: "{{url}}/produtos/{{id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Logitech MX Vertical",
+        "preco": 470,
+        "descricao": "Mouse",
+        "quantidade": 381
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

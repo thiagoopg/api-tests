@@ -1,0 +1,66 @@
+info:
+  name: Cadastrar usuário
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{url}}/usuarios"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Fulano da Silva",
+        "email": "{{emailDinamico}}",
+        "password": "teste",
+        "administrador": "true"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        //Cria um email aleatório
+        let randomId = Math.floor(Math.random() * 10000);
+        let emailAleatorio = `teste_${randomId}@qa.com.br`;
+        bru.setVar("emailDinamico", emailAleatorio);
+
+        test("Deve retornar status 201 - Criado", function() {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        let randomId = Math.floor(Math.random() * 10000);
+        let emailAleatorio = `teste_${randomId}@qa.com.br`;
+        bru.setVar("emailDinamico", emailAleatorio);
+
+        test("Deve confirmar mensagem de sucesso", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Cadastro realizado com sucesso");
+          expect(data._id).to.be.a('string');
+        });
+
+        // DICA: Salve o ID criado para usar em outros testes (como o GET ou DELETE)
+        if (res.getStatus() === 201) {
+          bru.setVar("idNovoUsuario", res.getBody()._id);
+        }
+        let randomId = Math.floor(Math.random() * 10000);
+        let emailAleatorio = `teste_${randomId}@qa.com.br`;
+        bru.setVar("emailDinamico", emailAleatorio);
+
+        test("Deve retornar status 400 para e-mail duplicado", function() {
+          expect(res.getStatus()).to.equal(400);
+        });
+        let randomId = Math.floor(Math.random() * 10000);
+        let emailAleatorio = `teste_${randomId}@qa.com.br`;
+        bru.setVar("emailDinamico", emailAleatorio);
+        test("Deve retornar a mensagem de erro correta", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Este email já está sendo usado");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
