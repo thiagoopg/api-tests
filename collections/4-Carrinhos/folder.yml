@@ -1,7 +1,7 @@
 info:
-  name: Produtos
+  name: 4-Carrinhos
   type: folder
-  seq: 3
+  seq: 4
 
 request:
   auth: inherit

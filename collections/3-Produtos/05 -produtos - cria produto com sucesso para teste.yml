@@ -13,7 +13,7 @@ http:
     type: json
     data: |-
       {
-        "nome": "teclado yellow",
+        "nome": "teclado red",
         "preco": 473,
         "descricao": "teclado gamer",
         "quantidade": 73
