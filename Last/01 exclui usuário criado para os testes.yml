@@ -1,0 +1,28 @@
+info:
+  name: 01 exclui usuário criado para os testes
+  type: http
+  seq: 1
+
+http:
+  method: DELETE
+  url: "{{url}}/usuarios/{{idUserAdmin}}"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 200 - Excluido", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("Deve confirmar mensagem de erro", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Registro excluído com sucesso");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
