@@ -1,0 +1,45 @@
+info:
+  name: Criar User para Login
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url}}/usuarios"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "admin",
+        "email": "admin@master.com.br",
+        "password": "Admin123!@#",
+        "administrador": "true"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("idUserAdmin", res.getBody()._id)
+    - type: tests
+      code: |-
+        test("Deve retornar status 201 - Criado", function() {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("Deve confirmar mensagem de sucesso", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Cadastro realizado com sucesso");
+          expect(data._id).to.be.a('string');
+        });
+
+        // Salvar usuário
+        if (res.getStatus() === 201) {
+          bru.setVar("idUsuarioDuplicado", res.getBody()._id);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
