@@ -26,10 +26,10 @@ runtime:
           expect(data.produtos).to.be.an('array');
 
           // Se houver pelo menos um usuário, valida o contrato (Schema)
-            const total = data.carrinhos[0];
-          if (data.carrinhos.length > 0) {
+            const total = data;
+          if (data.produtos.length > 0) {
             expect(total).to.include.keys('produtos')
-            const produto = data.carrinhos[0].produtos[0];
+            const produto = data.produtos[0];
             expect(produto).to.have.all.keys('idProduto', 'quantidade', 'precoUnitario');
           }
           expect(total).to.include.keys("precoTotal", "quantidadeTotal", "idUsuario", "_id")
