@@ -41,7 +41,7 @@ variables:
     enabled: true
     secret: false
   - name: nomeProdutoDuplicado
-    value: Mouse verde
+    value: Mouse yellow
     type: text
     enabled: true
     secret: false
