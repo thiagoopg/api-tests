@@ -1,0 +1,32 @@
+info:
+  name: 12 Carrinho não encontrado
+  type: http
+  seq: 12
+
+http:
+  method: DELETE
+  url: "{{url}}/carrinhos/concluir-compra"
+  headers:
+    - name: Authorization
+      value: "{{token}}"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 200 - Ok", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("Deve confirmar mensagem de sucesso", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Não foi encontrado carrinho para esse usuário");
+          expect(data.message).to.be.a('string');
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

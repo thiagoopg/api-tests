@@ -1,0 +1,46 @@
+info:
+  name: 02 cadastrar produto 1 para teste
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{url}}/produtos"
+  headers:
+    - name: Authorization
+      value: "{{token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "{{nomeProdutoDuplicado}}",
+        "preco": 10,
+        "descricao": "Mouse gamer",
+        "quantidade": 126
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.getStatus() === 201) {
+          bru.setVar("idProdutoDuplicado", res.getBody()._id);
+        }
+    - type: tests
+      code: |-
+        test("Deve retornar status 201 - Criado", function() {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("Deve confirmar mensagem de sucesso", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Cadastro realizado com sucesso");
+          expect(data._id).to.be.a('string');
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

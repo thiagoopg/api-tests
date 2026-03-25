@@ -1,0 +1,29 @@
+info:
+  name: 07 Listar Carrinho Criado
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: "{{url}}/carrinhos/0123456789123456"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 400 - Bad", function() {
+          expect(res.getStatus()).to.equal(400);
+        });
+
+        test("Deve confirmar mensagem de erro", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Carrinho não encontrado");
+          expect(data.message).to.be.a('string');
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

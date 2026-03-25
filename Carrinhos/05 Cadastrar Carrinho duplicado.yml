@@ -1,0 +1,47 @@
+info:
+  name: 05 Cadastrar Carrinho duplicado
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{url}}/carrinhos"
+  headers:
+    - name: Authorization
+      value: "{{token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "produtos": [
+          {
+            "idProduto": "{{idSegundoProduto}}",
+            "quantidade": 1
+          },
+          {
+            "idProduto": "{{idProdutoDuplicado}}",
+            "quantidade": 3
+          }
+        ]
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 400 - Bad", function() {
+          expect(res.getStatus()).to.equal(400);
+        });
+
+        test("Deve confirmar mensagem de erro", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Não é permitido ter mais de 1 carrinho");
+          expect(data.message).to.be.a('string');
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

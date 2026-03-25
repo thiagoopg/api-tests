@@ -1,0 +1,47 @@
+info:
+  name: 10 Cadastrar Carrinhos para teste
+  type: http
+  seq: 10
+
+http:
+  method: POST
+  url: "{{url}}/carrinhos"
+  headers:
+    - name: Authorization
+      value: "{{token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "produtos": [
+          {
+            "idProduto": "{{idSegundoProduto}}",
+            "quantidade": 1
+          },
+          {
+            "idProduto": "{{idProdutoDuplicado}}",
+            "quantidade": 3
+          }
+        ]
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 201 - Criado", function() {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("Deve confirmar mensagem de sucesso", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Cadastro realizado com sucesso");
+          expect(data._id).to.be.a('string');
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
