@@ -1,0 +1,42 @@
+info:
+  name: 01 /produtos - Listar Produtos
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{url}}/produtos"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 200", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("A resposta deve ser um JSON válido", function() {
+          expect(res.getHeader('content-type')).to.include('application/json');
+        });
+
+        test("Deve retornar a lista de produtos com os campos obrigatórios", function() {
+          const data = res.getBody();
+          
+          // Valida se a quantidade é um número e se o array existe
+          expect(data.quantidade).to.be.a('number');
+          expect(data.produtos).to.be.an('array');
+
+          // Se houver pelo menos um usuário, valida o contrato (Schema)
+          if (data.produtos.length > 0) {
+            const produto = data.produtos[0];
+            expect(produto).to.include.keys('nome', 'preco', 'descricao', 'quantidade', '_id');
+            console.log(produto);
+          }
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

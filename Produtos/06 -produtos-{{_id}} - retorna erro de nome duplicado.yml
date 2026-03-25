@@ -1,0 +1,40 @@
+info:
+  name: 06 /produtos/{{_id}} - retorna erro de nome duplicado
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: "{{url}}/produtos/{{idSegundoProduto}}"
+  headers:
+    - name: Authorization
+      value: "{{token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "{{nomeProdutoDuplicado}}",
+        "preco": 4700,
+        "descricao": "mouse gamer duplicado",
+        "quantidade": 201
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 400", function() {
+          expect(res.getStatus()).to.equal(400);
+        });
+
+        test("Deve confirmar mensagem de erro", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Já existe produto com esse nome");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

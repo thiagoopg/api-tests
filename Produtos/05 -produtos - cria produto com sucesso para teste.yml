@@ -1,0 +1,43 @@
+info:
+  name: 05 /produtos - cria produto com sucesso para teste
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{url}}/produtos"
+  headers:
+    - name: Authorization
+      value: "{{token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "teclado green",
+        "preco": 473,
+        "descricao": "teclado gamer",
+        "quantidade": 73
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 201 - Criado", function() {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("Deve confirmar mensagem de sucesso", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Cadastro realizado com sucesso");
+          expect(data._id).to.be.a('string');
+        });
+
+        bru.setVar("idSegundoProduto",res.getBody()._id)
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,40 @@
+info:
+  name: 07 /produtos/{{_id}} - retorna alteração com sucesso
+  type: http
+  seq: 7
+
+http:
+  method: PUT
+  url: "{{url}}/produtos/{{idProdutoDuplicado}}"
+  headers:
+    - name: Authorization
+      value: "{{token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Produto alterado",
+        "preco": 4700,
+        "descricao": "Produto alterado",
+        "quantidade": 201
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 200", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("Deve confirmar mensagem de sucesso", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Registro alterado com sucesso");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
