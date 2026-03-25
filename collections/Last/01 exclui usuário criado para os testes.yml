@@ -16,7 +16,7 @@ runtime:
           expect(res.getStatus()).to.equal(200);
         });
 
-        test("Deve confirmar mensagem de erro", function() {
+        test("Deve confirmar mensagem de sucesso", function() {
           const data = res.getBody();
           expect(data.message).to.equal("Registro excluído com sucesso");
         });
