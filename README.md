@@ -31,6 +31,7 @@ frontend-tests/
 |  
 ├── emvironments/                 # Pasta com variáveis globais
 |
+├── Serverest-API-Tests.html      # Arquivo para Docs gerada pelo Bruno
 └── bruno.json                    # Configurações do Bruno
 ```
 
