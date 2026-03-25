@@ -1,0 +1,28 @@
+info:
+  name: 08 /usuarios/{{_id}} - excluir usuário com sucesso
+  type: http
+  seq: 8
+
+http:
+  method: DELETE
+  url: "{{url}}/usuarios/{{idUsuarioDuplicado}}"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 200 - Excluido", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("Deve confirmar mensagem de erro", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Registro excluído com sucesso");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

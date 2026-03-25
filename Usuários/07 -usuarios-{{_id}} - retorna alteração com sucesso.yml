@@ -1,0 +1,37 @@
+info:
+  name: 07 /usuarios/{{_id}} - retorna alteração com sucesso
+  type: http
+  seq: 7
+
+http:
+  method: PUT
+  url: "{{url}}/usuarios/{{idUsuarioDuplicado}}"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Fulano da Silva Alterado",
+        "email": "emailfalso@hotmail.com",
+        "password": "teste",
+        "administrador": "true"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Deve retornar status 200", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("Deve confirmar mensagem de sucesso", function() {
+          const data = res.getBody();
+          expect(data.message).to.equal("Registro alterado com sucesso");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
