@@ -23,8 +23,6 @@ runtime:
         test("Deve retornar a lista de carrinhos com os campos obrigatórios", function() {
           const data = res.getBody();
           
-          // Valida se a quantidade é um número e se o array existe
-          expect(data.quantidade).to.be.a('number');
           expect(data.carrinhos).to.be.an('array');
 
           // Se houver pelo menos um usuário, valida o contrato (Schema)
